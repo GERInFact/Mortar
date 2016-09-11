@@ -34,7 +34,7 @@ int main()
 					else if (y == myMortar.mPosition[0] && x == myMortar.mPosition[1])
 					{
 						SETCMDCOLOR(GREEN)
-							std::cout << " M ";
+							std::cout << " O ";
 						SETCMDCOLOR(LIGHTGRAY)
 					}
 					else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
@@ -66,8 +66,12 @@ int main()
 			if (!enemy)
 			{
 				enemy = enemy->sendScouts();
-				if(enemy)
-				std::cout << "Enemy detected..\n";
+				if (enemy)
+				{
+					SETCMDCOLOR(RED)
+					std::cout << "Enemy detected..\n";
+					SETCMDCOLOR(LIGHTGRAY)
+				}
 			}
 			break;
 		case 3:
@@ -100,6 +104,7 @@ int main()
 					{
 						std::cout << "Emeny died!\n";
 						myMortar.setExp(enemy->getExp());
+						myMortar.setShellLevel();
 						delete enemy;
 						enemy = 0;
 						break;

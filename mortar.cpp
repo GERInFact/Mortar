@@ -34,7 +34,7 @@ bool Mortar::isEnemyInRange(Mortar* mEnemy)
 
 void Mortar::setShellLevel()
 {
-	if (mExperience == mShellType * 300)
+	if (mExperience >= mShellType * 50)
 		mShellType++;
 
 }
