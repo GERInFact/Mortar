@@ -13,12 +13,17 @@
 class Mortar
 {
 public:
-	Mortar(int armour, int health, int shellType, int range, int blastRadius, int damage, int reloadTime);
+	friend std::ostream& operator << (std::ostream& out, Mortar mortar);
+	Mortar(int armour, int health, int shellType, int range, int blastRadius, int damage, int reloadTime, int exp);
 	Mortar();
 	void displayStats();
 	void applyDamage(Mortar* mEnemy);
-	int mPosition[2] = {0,0};
+	unsigned int mPosition[2] = {0,0};
 	int getHealth();
+	void setExp(int exp);
+	int getExp();
+	void setShellLevel();
+	void moveMortar(int input);
 	Mortar* sendScouts();
 private:
 	int mHealth;
@@ -28,6 +33,7 @@ private:
 	int mBlastRadius;
 	int mDamageDealt;
 	int mReloadTime;
+	int mExperience;
 
 
 };
