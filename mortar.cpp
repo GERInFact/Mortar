@@ -72,12 +72,19 @@ int Mortar::getHealth()
 {
 	return mHealth;
 }
-void Mortar::moveMortar(int input)
+void Mortar::moveMortar(int input, int* battleField)
 {
 	switch (input)
 	{
 	case 1:
+		if (mPosition[1] < battleField[1])
 		mPosition[1] += 1;
+		else
+		{
+			SETCMDCOLOR(RED)
+				std::cout << "Desertion impossible!\n";
+			SETCMDCOLOR(LIGHTGRAY)
+		}
 		break;
 	case 2:
 		if (mPosition[1] > 0)
@@ -85,12 +92,19 @@ void Mortar::moveMortar(int input)
 		else
 		{
 			SETCMDCOLOR(RED)
-				std::cout << "Desertion will be punished!\n";
+				std::cout << "Desertion impossible!\n";
 			SETCMDCOLOR(LIGHTGRAY)
 		}
 		break;
 	case 3:
-		mPosition[0] += 1;
+		if (mPosition[0] < battleField[0]-1)
+			mPosition[0] += 1;
+		else
+		{
+			SETCMDCOLOR(RED)
+				std::cout << "Desertion impossible!\n";
+			SETCMDCOLOR(LIGHTGRAY)
+		}
 		break;
 	case 4:
 		if (mPosition[0]>0)
@@ -98,7 +112,7 @@ void Mortar::moveMortar(int input)
 		else
 		{
 			SETCMDCOLOR(RED)
-				std::cout << "Desertion will be punished!\n";
+				std::cout << "Desertion impossible!\n";
 			SETCMDCOLOR(LIGHTGRAY)
 		}
 		break;

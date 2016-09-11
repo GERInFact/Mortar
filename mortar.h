@@ -18,12 +18,12 @@ public:
 	Mortar();
 	void displayStats();
 	void applyDamage(Mortar* mEnemy);
-	unsigned int mPosition[2] = {0,0};
+	int mPosition[2] = {1+rand()%10,1+rand()%10};
 	int getHealth();
 	void setExp(int exp);
 	int getExp();
 	void setShellLevel();
-	void moveMortar(int input);
+	void moveMortar(int input, int* battleField);
 	Mortar* sendScouts();
 private:
 	int mHealth;

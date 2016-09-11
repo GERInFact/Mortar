@@ -8,6 +8,7 @@ int main()
 	bool gameOver = 0;
 	bool showMap = 0;
 	int input = 0;
+	int battleField[2] = { 10,10 };
 	Mortar* enemy = 0;
 	Mortar myMortar(10,200,1,10,3,30,3,0);
 
@@ -22,17 +23,26 @@ int main()
 	{
 		if(showMap)
 		{
-			for (int x = 1; x < 11; x++)
+			for (int x = 1; x < (battleField[0]+1); x++)
 			{
-				for (int y = 1; y < 11; y++)
+				for (int y = 1; y < (battleField[1]+1); y++)
 				{
 					if (!(y % 10))
 					{
 						std::cout << std::endl;
 					}
-					else if (x == myMortar.mPosition[0] && y == myMortar.mPosition[1])
+					else if (y == myMortar.mPosition[0] && x == myMortar.mPosition[1])
 					{
-						std::cout << " x ";
+						SETCMDCOLOR(GREEN)
+							std::cout << " M ";
+						SETCMDCOLOR(LIGHTGRAY)
+					}
+					else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
+					{
+							SETCMDCOLOR(RED)
+							std::cout << " E ";
+							SETCMDCOLOR(LIGHTGRAY)
+					
 					}
 					else
 						std::cout << " _ ";
@@ -41,51 +51,23 @@ int main()
 			}
 
 		}
-		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Quit game\n";
+		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6)Quit game\n";
 		std::cin >> input;
 		switch (input)
 		{
 		case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west\n";
 			std::cin >> input;
-			myMortar.moveMortar(input);
+			myMortar.moveMortar(input, battleField);
 			SETCMDCOLOR(GREEN)
 			std::cout << "Position: " << myMortar.mPosition[0] << " | " << myMortar.mPosition[1] << std::endl;
 			SETCMDCOLOR(LIGHTGRAY)
 			break;
 		case 2:
-			if(!enemy)
-			enemy = enemy->sendScouts();
-
-			while (enemy)
+			if (!enemy)
 			{
-				SETCMDCOLOR(RED) 
-				std::cout << "Enemy stats:\n";
-				enemy->displayStats();
-				SETCMDCOLOR(GREEN)
-				std::cout << "My stats:\n";
-				myMortar.displayStats();
-				
-				SETCMDCOLOR(LIGHTGRAY)
-				std::cout << "Attacking enemy...";
-				myMortar.applyDamage(enemy);
-				if (enemy->getHealth() <= 0)
-				{
-					std::cout << "Emeny died!\n";
-					myMortar.setExp(enemy->getExp());
-					delete enemy;
-					enemy = 0;
-					break;
-				}
-				std::cout << "Enemy strikes back...";
-				enemy->applyDamage(&myMortar);				
-				if (myMortar.getHealth() <= 0)
-				{
-					SETCMDCOLOR(RED)
-					std::cout << "				***********GAME OVER!***********\n";
-					gameOver = 1;
-					break;
-				}
-
+				enemy = enemy->sendScouts();
+				if(enemy)
+				std::cout << "Enemy detected..\n";
 			}
 			break;
 		case 3:
@@ -97,6 +79,40 @@ int main()
 		case 4:
 			showMap = !showMap;
 			break;
+		case 5:
+			while (enemy)
+			{
+				
+				SETCMDCOLOR(RED)
+					std::cout << "Enemy stats:\n";
+				enemy->displayStats();
+				SETCMDCOLOR(GREEN)
+					std::cout << "My stats:\n";
+				myMortar.displayStats();
+
+				SETCMDCOLOR(LIGHTGRAY)
+					std::cout << "Attacking enemy...";
+				myMortar.applyDamage(enemy);
+				if (enemy->getHealth() <= 0)
+				{
+					std::cout << "Emeny died!\n";
+					myMortar.setExp(enemy->getExp());
+					delete enemy;
+					enemy = 0;
+					break;
+				}
+				std::cout << "Enemy strikes back...";
+				enemy->applyDamage(&myMortar);
+				if (myMortar.getHealth() <= 0)
+				{
+					SETCMDCOLOR(RED)
+						std::cout << "				***********GAME OVER!***********\n";
+					gameOver = 1;
+					break;
+				}
+				Sleep(2500);
+				
+			}
 		}
 	}
 	
