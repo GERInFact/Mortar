@@ -23,6 +23,14 @@ std::ostream& operator << (std::ostream& out, Mortar mortar)
 	return out;
 }
 
+bool Mortar::isEnemyInRange(Mortar* mEnemy)
+{
+	int range = sqrt((mEnemy->mPosition[0] - mPosition[0])*(mEnemy->mPosition[0] - mPosition[0]) + (mEnemy->mPosition[1] - mPosition[1]) * (mEnemy->mPosition[1] - mPosition[1]));
+	std::cout << "Distance to target: " << range << std::endl;
+	if (range <= mRange-mBlastRadius)
+		return 1;
+	else return 0;
+}
 
 void Mortar::setShellLevel()
 {
@@ -40,19 +48,27 @@ void Mortar::setExp(int exp)
 }
 void Mortar::applyDamage(Mortar* mEnemy)
 {	
-	int damage = mDamageDealt*mShellType - mEnemy->mArmour*mEnemy->mShellType;
-	
-	if (damage > 0 && mEnemy)
+	if (isEnemyInRange(mEnemy))
 	{
-		mEnemy->mHealth -= (damage);
-		std::cout << damage << " damage dealt!\n";
+		int damage = mDamageDealt*mShellType - mEnemy->mArmour*mEnemy->mShellType;
+
+		if (damage > 0 && mEnemy)
+		{
+			mEnemy->mHealth -= (damage);
+			std::cout << damage << " damage dealt!\n";
+		}
+		else
+		{
+			SETCMDCOLOR(RED)
+			std::cout << "Missle couldn't penetrate enemy's armour\n";
+			SETCMDCOLOR(LIGHTGRAY)
+		}
 	}
 	else
 	{
-		SETCMDCOLOR(RED)
-		std::cout << "Missle couldn't penetrate enemy's armour\n";
-		SETCMDCOLOR(LIGHTGRAY)
+		std::cout << "Missile missed the target...\n";
 	}
+	
 }
 
 Mortar* Mortar::sendScouts()

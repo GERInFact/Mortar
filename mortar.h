@@ -24,6 +24,7 @@ public:
 	int getExp();
 	void setShellLevel();
 	void moveMortar(int input, int* battleField);
+	bool isEnemyInRange(Mortar* enemy);
 	Mortar* sendScouts();
 private:
 	int mHealth;

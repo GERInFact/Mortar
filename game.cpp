@@ -80,38 +80,49 @@ int main()
 			showMap = !showMap;
 			break;
 		case 5:
-			while (enemy)
+			if (myMortar.isEnemyInRange(enemy))
 			{
+				while (enemy)
+				{
 				
-				SETCMDCOLOR(RED)
-					std::cout << "Enemy stats:\n";
-				enemy->displayStats();
-				SETCMDCOLOR(GREEN)
-					std::cout << "My stats:\n";
-				myMortar.displayStats();
-
-				SETCMDCOLOR(LIGHTGRAY)
-					std::cout << "Attacking enemy...";
-				myMortar.applyDamage(enemy);
-				if (enemy->getHealth() <= 0)
-				{
-					std::cout << "Emeny died!\n";
-					myMortar.setExp(enemy->getExp());
-					delete enemy;
-					enemy = 0;
-					break;
-				}
-				std::cout << "Enemy strikes back...";
-				enemy->applyDamage(&myMortar);
-				if (myMortar.getHealth() <= 0)
-				{
 					SETCMDCOLOR(RED)
-						std::cout << "				***********GAME OVER!***********\n";
-					gameOver = 1;
-					break;
-				}
-				Sleep(2500);
+					std::cout << "Enemy stats:\n";
+					enemy->displayStats();
+					SETCMDCOLOR(GREEN)
+					std::cout << "My stats:\n";
+					myMortar.displayStats();
+
 				
+					SETCMDCOLOR(LIGHTGRAY)
+					std::cout << "Attacking enemy...";
+					myMortar.applyDamage(enemy);
+					if (enemy->getHealth() <= 0)
+					{
+						std::cout << "Emeny died!\n";
+						myMortar.setExp(enemy->getExp());
+						delete enemy;
+						enemy = 0;
+						break;
+					}
+
+					std::cout << "Enemy strikes back...";
+					enemy->applyDamage(&myMortar);
+						
+					if (myMortar.getHealth() <= 0)
+					{
+						SETCMDCOLOR(RED)
+						std::cout << "				***********GAME OVER!***********\n";
+						gameOver = 1;
+						break;
+					}
+					Sleep(2000);
+				}
+				
+			}
+			else
+			{
+				std::cout << "Enemy out of range!\n";
+				break;
 			}
 		}
 	}
