@@ -9,7 +9,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 	{
 		for (int y = 1; y < (battleField[1] + 1); y++)
 		{
-			if (!(y % 10))
+			if (!(y % 11))
 			{
 				std::cout << std::endl;
 			}
@@ -45,7 +45,7 @@ int main()
 	srand(time(0));
 
 	SETCMDCOLOR(TURQUOISE)
-	std::cout << "\nWelcome to Mortar, a design by Fabio Anthony!\n\n";
+	std::cout << "\nWelcome to Mortar, a game design by Fabio Anthony!\n\n";
 	SETCMDCOLOR(LIGHTGRAY)
 
 
