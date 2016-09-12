@@ -62,7 +62,7 @@ void Mortar::applyDamage(Mortar* mEnemy)
 		else
 		{
 			SETCMDCOLOR(RED)
-			std::cout << "Missle couldn't penetrate enemy's armour\n";
+			std::cout << "Missle couldn't penetrate armour\n";
 			SETCMDCOLOR(LIGHTGRAY)
 		}
 	}
