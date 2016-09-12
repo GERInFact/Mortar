@@ -62,6 +62,7 @@ int main()
 		case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west\n";
 			std::cin >> input;
 			myMortar.moveMortar(input, battleField);
+			enemy->moveMortar(1 + rand() % (5 - 1), battleField);
 			SETCMDCOLOR(GREEN)
 			std::cout << "Position: " << myMortar.mPosition[0] << " | " << myMortar.mPosition[1] << std::endl;
 			SETCMDCOLOR(LIGHTGRAY)
@@ -99,9 +100,8 @@ int main()
 					SETCMDCOLOR(GREEN)
 					std::cout << "My stats:\n";
 					myMortar.displayStats();
-
-				
 					SETCMDCOLOR(LIGHTGRAY)
+			
 					std::cout << "Attacking enemy...";
 					myMortar.applyDamage(enemy);
 					if (enemy->getHealth() <= 0)
@@ -124,8 +124,7 @@ int main()
 						gameOver = 1;
 						break;
 					}
-					enemy->moveMortar(1 + rand() % (5 - 1), battleField);
-					Sleep(2000);
+					Sleep(2500);
 				}
 				
 			}
