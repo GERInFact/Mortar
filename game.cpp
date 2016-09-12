@@ -5,11 +5,11 @@
 void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 {
 
-	for (int x = 1; x < (battleField[0] + 1); x++)
+	for (int x = 1; x <= (battleField[0]); x++)
 	{
-		for (int y = 1; y < (battleField[1] + 1); y++)
+		for (int y = 1; y <= (battleField[1]); y++)
 		{
-			if (!(y % 11))
+			if (!(y % 10))
 			{
 				std::cout << std::endl;
 			}
