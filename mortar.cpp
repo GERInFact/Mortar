@@ -27,7 +27,7 @@ bool Mortar::isEnemyInRange(Mortar* mEnemy)
 {
 	int range = sqrt((mEnemy->mPosition[0] - mPosition[0])*(mEnemy->mPosition[0] - mPosition[0]) + (mEnemy->mPosition[1] - mPosition[1]) * (mEnemy->mPosition[1] - mPosition[1]));
 	std::cout << "Distance to target: " << range << std::endl;
-	if (range <= mRange-mBlastRadius)
+	if (range <= mRange+mBlastRadius)
 		return 1;
 	else return 0;
 }
@@ -35,7 +35,9 @@ bool Mortar::isEnemyInRange(Mortar* mEnemy)
 void Mortar::setShellLevel()
 {
 	if (mExperience >= mShellType * 200)
+	{
 		mShellType++;
+	}
 
 }
 int Mortar::getExp()
@@ -76,7 +78,7 @@ Mortar* Mortar::sendScouts()
 	int rnd = rand() % 4;
 
 	if(rnd == 1)
-	return new Mortar(5,100,1+rand()%(4-1),3,1,5+rand()%(60-5),3, 30 + rand() % (101 - 30));
+	return new Mortar(5,100+rand()%(300-100),1+rand()%(4-1),1+rand()%4-1,1,5+rand()%(60-5),3, 30 + rand() % (101 - 30));
 	else return 0;
 
 }
@@ -93,8 +95,8 @@ void Mortar::moveMortar(int input, int* battleField)
 	switch (input)
 	{
 	case 1:
-		if (mPosition[1] < battleField[1])
-		mPosition[1] += 1;
+		if (mPosition[1] > 1)
+			mPosition[1] -= 1;
 		else
 		{
 			SETCMDCOLOR(RED)
@@ -103,8 +105,9 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 2:
-		if (mPosition[1] > 0)
-			mPosition[1] -= 1;
+		if (mPosition[1] < battleField[1])
+			mPosition[1] += 1;
+		
 		else
 		{
 			SETCMDCOLOR(RED)
@@ -123,7 +126,7 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 4:
-		if (mPosition[0]>0)
+		if (mPosition[0]>1)
 		mPosition[0] -= 1;
 		else
 		{

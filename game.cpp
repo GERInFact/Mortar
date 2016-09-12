@@ -2,7 +2,37 @@
 #include <time.h>
 
 
+void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
+{
 
+	for (int x = 1; x < (battleField[0] + 1); x++)
+	{
+		for (int y = 1; y < (battleField[1] + 1); y++)
+		{
+			if (!(y % 10))
+			{
+				std::cout << std::endl;
+			}
+			else if (y == myMortar->mPosition[0] && x == myMortar->mPosition[1])
+			{
+				SETCMDCOLOR(GREEN)
+					std::cout << " O ";
+				SETCMDCOLOR(LIGHTGRAY)
+			}
+			else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
+			{
+				SETCMDCOLOR(RED)
+				std::cout << " E ";
+				SETCMDCOLOR(LIGHTGRAY)
+
+			}
+			else
+				std::cout << " _ ";
+		}
+		std::cout << std::endl;
+	}
+
+}
 int main()
 {
 	bool gameOver = 0;
@@ -10,7 +40,7 @@ int main()
 	int input = 0;
 	int battleField[2] = { 10,10 };
 	Mortar* enemy = 0;
-	Mortar myMortar(10,200,1,10,3,30,3,0);
+	Mortar myMortar(10,200,1,3,3,30,3,0);
 
 	srand(time(0));
 
@@ -23,33 +53,7 @@ int main()
 	{
 		if(showMap)
 		{
-			for (int x = 1; x < (battleField[0]+1); x++)
-			{
-				for (int y = 1; y < (battleField[1]+1); y++)
-				{
-					if (!(y % 10))
-					{
-						std::cout << std::endl;
-					}
-					else if (y == myMortar.mPosition[0] && x == myMortar.mPosition[1])
-					{
-						SETCMDCOLOR(GREEN)
-							std::cout << " O ";
-						SETCMDCOLOR(LIGHTGRAY)
-					}
-					else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
-					{
-							SETCMDCOLOR(RED)
-							std::cout << " E ";
-							SETCMDCOLOR(LIGHTGRAY)
-					
-					}
-					else
-						std::cout << " _ ";
-				}
-				std::cout << std::endl;
-			}
-
+			displayMap(&myMortar,enemy, battleField);
 		}
 		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6)Quit game\n";
 		std::cin >> input;
@@ -120,6 +124,7 @@ int main()
 						gameOver = 1;
 						break;
 					}
+					enemy->moveMortar(1 + rand() % (5 - 1), battleField);
 					Sleep(2000);
 				}
 				

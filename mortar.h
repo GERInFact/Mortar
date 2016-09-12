@@ -18,7 +18,7 @@ public:
 	Mortar();
 	void displayStats();
 	void applyDamage(Mortar* mEnemy);
-	int mPosition[2] = {1+rand()%10,1+rand()%10};
+	int mPosition[2] = {1+rand()%(10-1),	1+rand()%(10-1)};
 	int getHealth();
 	void setExp(int exp);
 	int getExp();
