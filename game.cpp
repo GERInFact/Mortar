@@ -30,6 +30,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 				std::cout << " _ ";
 		}
 		std::cout << std::endl;
+		std::cout << "hund";
 	}
 
 }
