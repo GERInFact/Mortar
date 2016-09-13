@@ -62,6 +62,7 @@ int main()
 		case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west\n";
 			std::cin >> input;
 			myMortar.moveMortar(input, battleField);
+			if(enemy)
 			enemy->moveMortar(1 + rand() % (5 - 1), battleField);
 			SETCMDCOLOR(GREEN)
 			std::cout << "Position: " << myMortar.mPosition[0] << " | " << myMortar.mPosition[1] << std::endl;
