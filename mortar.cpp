@@ -71,6 +71,12 @@ void Mortar::applyDamage(Mortar* mEnemy)
 				SETCMDCOLOR(LIGHTGRAY)
 			}
 		}
+		else if (mIsPlayer)
+		{
+			SETCMDCOLOR(RED|GREEN)			
+			std::cout << "Invalid command! Recheck turret alignment...\n";
+			SETCMDCOLOR(LIGHTGRAY)
+		}
 	}
 	else
 	{

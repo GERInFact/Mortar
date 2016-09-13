@@ -4,9 +4,11 @@
 
 #include <windows.h>
 #define RED 12
-#define LIGHTGRAY 7
 #define GREEN 10
+#define BLUE 9
+#define LIGHTGRAY 7
 #define TURQUOISE 11
+
 
 #define SETCMDCOLOR(ColorValue) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ColorValue);
 

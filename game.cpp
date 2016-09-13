@@ -27,7 +27,6 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 				SETCMDCOLOR(RED)
 				std::cout << " E ";
 				SETCMDCOLOR(LIGHTGRAY)
-
 			}
 			else
 				std::cout << " _ ";
@@ -55,18 +54,22 @@ int main()
 
 	while (!gameOver)
 	{
+		SETCMDCOLOR(LIGHTGRAY)
+
 		if(showMap)
 		{
 			displayMap(&myMortar,enemy, battleField);
 		}
+		SETCMDCOLOR(RED | TURQUOISE)
 		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6)Quit game\n";
 		std::cin >> input;
-
+		SETCMDCOLOR(RED | BLUE)
 			switch (input)
 			{
+			
 			case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west 5) Align mortar \n";
 				std::cin >> input;
-					
+
 				myMortar.moveMortar(input, battleField);
 				if (enemy)
 					enemy->moveMortar(1 + rand() % (5 - 1), battleField);
@@ -125,6 +128,8 @@ int main()
 
 						if (myMortar.getHealth() <= 0)
 						{
+							Sleep(2500);
+							std::cout.clear();
 							SETCMDCOLOR(RED)
 								std::cout << "				***********GAME OVER!***********\n";
 							gameOver = 1;
