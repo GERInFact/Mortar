@@ -1,8 +1,8 @@
 #include "mortar.h"
 
 
-Mortar::Mortar(int armour, int health, int shellType, int range, int blastRadius, int damage, int reloadTime, int exp) : mArmour(armour),mHealth(health)
-				,mShellType(shellType), mRange(range),mBlastRadius(blastRadius),mDamageDealt(damage),mReloadTime(reloadTime), mExperience(exp){}
+Mortar::Mortar(int armour, int health, int shellType, int range, int blastRadius, int damage, int reloadTime, int exp, bool isPlayer) : mArmour(armour),mHealth(health)
+				,mShellType(shellType), mRange(range),mBlastRadius(blastRadius),mDamageDealt(damage),mReloadTime(reloadTime), mExperience(exp), mIsPlayer(isPlayer){}
 
 Mortar::Mortar() {}
 
@@ -22,12 +22,13 @@ std::ostream& operator << (std::ostream& out, Mortar mortar)
 
 	return out;
 }
-
-bool Mortar::isEnemyInRange(Mortar* mEnemy)
+int Mortar::distanceToTarget(Mortar* target)
 {
-	int range = sqrt((mEnemy->mPosition[0] - mPosition[0])*(mEnemy->mPosition[0] - mPosition[0]) + (mEnemy->mPosition[1] - mPosition[1]) * (mEnemy->mPosition[1] - mPosition[1]));
-	std::cout << "Distance to target: " << range << std::endl;
-	if (range <= mRange+mBlastRadius)
+	return sqrt((target->mPosition[0] - mPosition[0])*(target->mPosition[0] - mPosition[0]) + (target->mPosition[1] - mPosition[1]) * (target->mPosition[1] - mPosition[1]));
+}
+bool Mortar::isEnemyInRange(Mortar* mEnemy)
+{	 
+	if (mRange + mBlastRadius >= distanceToTarget(mEnemy))
 		return 1;
 	else return 0;
 }
@@ -50,25 +51,33 @@ void Mortar::setExp(int exp)
 }
 void Mortar::applyDamage(Mortar* mEnemy)
 {	
+	std::cout << "Distance to target: " << distanceToTarget(mEnemy)<<std::endl;
+
 	if (isEnemyInRange(mEnemy))
 	{
-		int damage = mDamageDealt*mShellType - mEnemy->mArmour*mEnemy->mShellType;
+		if ((mEnemy->mPosition[0] > mPosition[0] && mIsFacingRight) || (mEnemy->mPosition[0] < mPosition[0] && !mIsFacingRight) || !mIsPlayer)
+		{
+			int damage = mDamageDealt*mShellType - mEnemy->mArmour*mEnemy->mShellType;
 
-		if (damage > 0 && mEnemy)
-		{
-			mEnemy->mHealth -= (damage);
-			std::cout << damage << " damage dealt!\n";
-		}
-		else
-		{
-			SETCMDCOLOR(RED)
-			std::cout << "Missle couldn't rend armour\n";
-			SETCMDCOLOR(LIGHTGRAY)
+			if (damage > 0 && mEnemy)
+			{
+				mEnemy->mHealth -= (damage);
+				std::cout << damage << " damage dealt!\n";
+			}
+			else
+			{
+				SETCMDCOLOR(RED)
+					std::cout << "Missle couldn't rend armour\n";
+				SETCMDCOLOR(LIGHTGRAY)
+			}
 		}
 	}
 	else
 	{
-		std::cout << "Missile missed the target...\n";
+		SETCMDCOLOR(RED)
+		std::cout << "Out of range...\n";
+		SETCMDCOLOR(LIGHTGRAY)
+			
 	}
 	
 }
@@ -78,7 +87,7 @@ Mortar* Mortar::sendScouts()
 	int rnd = rand() % 4;
 
 	if(rnd == 1)
-	return new Mortar(5,100+rand()%(300-100),1+rand()%(4-1),1+rand()%4-1,1,5+rand()%(60-5),3, 30 + rand() % (101 - 30));
+	return new Mortar(5,100+rand()%(300-100),1+rand()%(4-1),1+rand()%4-1,1,5+rand()%(60-5),3, 30 + rand() % (101 - 30),0);
 	else return 0;
 
 }

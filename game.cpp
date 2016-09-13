@@ -44,7 +44,7 @@ int main()
 	int input = 0;
 	int battleField[2] = { 10,10 };
 	Mortar* enemy = 0;
-	Mortar myMortar(10,200,1,3,3,30,3,0);
+	Mortar myMortar(10,200,1,3,3,30,3,0,1);
 
 	srand(time(0));
 
@@ -96,20 +96,15 @@ int main()
 				showMap = !showMap;
 				break;
 			case 5:
-				if (myMortar.isEnemyInRange(enemy))
-				{
-					while (enemy)
-					{
-
 						SETCMDCOLOR(RED)
 							std::cout << "Enemy stats:\n";
 						enemy->displayStats();
 						SETCMDCOLOR(GREEN)
 							std::cout << "My stats:\n";
 						myMortar.displayStats();
+						
+						std::cout << "Attacking enemy...\n";
 						SETCMDCOLOR(LIGHTGRAY)
-
-							std::cout << "Attacking enemy...";
 						myMortar.applyDamage(enemy);
 						if (enemy->getHealth() <= 0)
 						{
@@ -121,7 +116,11 @@ int main()
 							break;
 						}
 
-						std::cout << "Enemy strikes back...";
+						Sleep(2500);
+						SETCMDCOLOR(RED)
+						std::cout << "Enemy strikes back...\n";
+						SETCMDCOLOR(LIGHTGRAY)
+
 						enemy->applyDamage(&myMortar);
 
 						if (myMortar.getHealth() <= 0)
@@ -129,17 +128,10 @@ int main()
 							SETCMDCOLOR(RED)
 								std::cout << "				***********GAME OVER!***********\n";
 							gameOver = 1;
-							break;
+							
 						}
-						Sleep(2500);
-					}
-
-				}
-				else
-				{
-					std::cout << "Enemy out of range!\n";
-					break;
-				}
+						break;
+							
 			default:
 			{	SETCMDCOLOR(RED)
 				std::cout << "Invalid input!\n";
