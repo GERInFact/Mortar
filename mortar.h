@@ -16,16 +16,18 @@ public:
 	friend std::ostream& operator << (std::ostream& out, Mortar mortar);
 	Mortar(int armour, int health, int shellType, int range, int blastRadius, int damage, int reloadTime, int exp);
 	Mortar();
-	void displayStats();
-	void applyDamage(Mortar* mEnemy);
-	int mPosition[2] = {1+rand()%(10-1),	1+rand()%(10-1)};
 	int getHealth();
-	void setExp(int exp);
-	int getExp();
 	void setShellLevel();
-	void moveMortar(int input, int* battleField);
 	bool isEnemyInRange(Mortar* enemy);
+	void applyDamage(Mortar* mEnemy);
+	int getExp();
+	void setExp(int exp);
+	void displayStats();
+	void moveMortar(int input, int* battleField);
 	Mortar* sendScouts();
+
+	int mPosition[2] = { 1 + rand() % (10 - 1),	1 + rand() % (10 - 1) };
+	bool mIsFacingRight = 1;
 private:
 	int mHealth;
 	int mArmour;

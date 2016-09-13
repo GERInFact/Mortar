@@ -16,7 +16,10 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 			else if (y == myMortar->mPosition[0] && x == myMortar->mPosition[1])
 			{
 				SETCMDCOLOR(GREEN)
-					std::cout << " O ";
+					if(myMortar->mIsFacingRight)
+					std::cout << " > ";
+					else
+					std::cout << " < ";
 				SETCMDCOLOR(LIGHTGRAY)
 			}
 			else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
@@ -31,7 +34,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 		}
 		
 	}
-	std::cout << std::endl << std::endl;
+	std::cout << std::endl << std::endl << std::endl;
 
 }
 int main()
@@ -60,7 +63,7 @@ int main()
 		std::cin >> input;
 		switch (input)
 		{
-		case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west\n";
+		case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west 5) Align mortar \n";
 			std::cin >> input;
 			myMortar.moveMortar(input, battleField);
 			if(enemy)

@@ -117,7 +117,16 @@ void Mortar::moveMortar(int input, int* battleField)
 		break;
 	case 3:
 		if (mPosition[0] < battleField[0])
-			mPosition[0] += 1;
+		{
+			if (mIsFacingRight)
+				mPosition[0] += 1;
+			else
+			{
+				SETCMDCOLOR(RED)
+				std::cout << "Align your mortar before movement!\n";
+				SETCMDCOLOR(LIGHTGRAY)
+			}
+		}
 		else
 		{
 			SETCMDCOLOR(RED)
@@ -126,14 +135,26 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 4:
-		if (mPosition[0]>1)
-		mPosition[0] -= 1;
+		if (mPosition[0] > 1)
+		{
+			if(!mIsFacingRight)
+			mPosition[0] -= 1;
+		else
+		{
+			SETCMDCOLOR(RED)
+				std::cout << "Align your mortar before movement!\n";
+			SETCMDCOLOR(LIGHTGRAY)
+		}
+		}
 		else
 		{
 			SETCMDCOLOR(RED)
 				std::cout << "Desertion impossible!\n";
 			SETCMDCOLOR(LIGHTGRAY)
 		}
+		break;
+	case 5:
+		mIsFacingRight = !mIsFacingRight;
 		break;
 	default:
 		SETCMDCOLOR(RED)
