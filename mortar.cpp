@@ -116,7 +116,7 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 3:
-		if (mPosition[0] < battleField[0]-1)
+		if (mPosition[0] < battleField[0])
 			mPosition[0] += 1;
 		else
 		{

@@ -9,7 +9,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 	{
 		for (int y = 1; y <= (battleField[1]); y++)
 		{
-			if (!(y % 10))
+			if (!(y % 11))
 			{
 				std::cout << std::endl;
 			}
@@ -29,7 +29,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 			else
 				std::cout << " _ ";
 		}
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 	}
 
 }
