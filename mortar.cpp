@@ -92,6 +92,7 @@ int Mortar::getHealth()
 }
 void Mortar::moveMortar(int input, int* battleField)
 {
+	
 	switch (input)
 	{
 	case 1:
@@ -116,7 +117,7 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 3:
-		if (mPosition[0] < battleField[0])
+		if (mPosition[0] < battleField[0]-1)
 		{
 			if (mIsFacingRight)
 				mPosition[0] += 1;
