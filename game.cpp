@@ -25,7 +25,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 			else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
 			{
 				SETCMDCOLOR(RED)
-				std::cout << " E ";
+				std::cout << " X ";
 				SETCMDCOLOR(LIGHTGRAY)
 			}
 			else
@@ -38,12 +38,15 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 }
 int main()
 {
-	bool gameOver = 0;
-	bool showMap = 0;
+	Mortar myMortar(10, 200, 1, 3, 3, 30, 3, 0, 1);
+	Mortar* enemy = 0;
 	int input = 0;
 	int battleField[2] = { 10,10 };
-	Mortar* enemy = 0;
-	Mortar myMortar(10,200,1,3,3,30,3,0,1);
+	bool gameOver = 0;
+	bool showMap = 0;
+	
+	
+	
 
 	srand(time(0));
 
@@ -63,13 +66,24 @@ int main()
 		SETCMDCOLOR(RED | TURQUOISE)
 		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6)Quit game\n";
 		std::cin >> input;
+		if (std::cin.fail())
+		{
+			SETCMDCOLOR(RED)
+				std::cout << "Invalid operation! GAME CRASHED!\n";
+			return 1;
+		}
 		SETCMDCOLOR(RED | BLUE)
 			switch (input)
 			{
 			
 			case 1: std::cout << "1) Move north 2) Move south 3) Move east 4) Move west 5) Align mortar \n";
 				std::cin >> input;
-
+				if (std::cin.fail())
+				{
+					SETCMDCOLOR(RED)
+						std::cout << "Invalid operation! GAME CRASHED!\n";
+					return 1;
+				}
 				myMortar.moveMortar(input, battleField);
 				if (enemy)
 					enemy->moveMortar(1 + rand() % (5 - 1), battleField);
@@ -128,10 +142,10 @@ int main()
 
 						if (myMortar.getHealth() <= 0)
 						{
-							Sleep(2500);
-							std::cout.clear();
 							SETCMDCOLOR(RED)
-								std::cout << "				***********GAME OVER!***********\n";
+							std::cout << "						    YOU DIED!\n";
+							Sleep(2500);
+							std::cout << "					***********GAME OVER!***********\n";
 							gameOver = 1;
 							
 						}

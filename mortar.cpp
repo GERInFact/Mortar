@@ -67,7 +67,7 @@ void Mortar::applyDamage(Mortar* mEnemy)
 			else
 			{
 				SETCMDCOLOR(RED)
-					std::cout << "Missle couldn't rend armour\n";
+				std::cout << "Missle couldn't rend armour\n";
 				SETCMDCOLOR(LIGHTGRAY)
 			}
 		}
