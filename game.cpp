@@ -85,7 +85,7 @@ int main()
 				std::cout << "						    YOU DIED!\n";
 			Sleep(2500);
 			std::cout << "					***********GAME OVER!***********\n";
-			gameOver = 1;
+			return 1;
 
 		}
 
