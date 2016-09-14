@@ -1,6 +1,13 @@
 #include "mortar.h"
 #include <time.h>
 
+
+
+
+int rando_Mize(int min, int max)
+{
+	return (min + rand() % (max - min) + 1);
+}
 int _2DTo1D(int* position, int width)
 {
 	return position[0] + position[1] * width;
@@ -40,7 +47,7 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 }
 int main()
 {
-	Mortar myMortar(10, 200, 1, 3, 3, 30, 3, 0, 1);
+	Mortar myMortar(rando_Mize(10, 15), rando_Mize(160, 400), 1, rando_Mize(3, 10), rando_Mize(1, 4), 0, 0, 1);
 	Mortar* enemy = 0;
 	int input = 0;
 	int battleField[2] = { 10,10 };
@@ -122,42 +129,46 @@ int main()
 				showMap = !showMap;
 				break;
 			case 5:
-						SETCMDCOLOR(RED)
-							std::cout << "Enemy stats:\n";
-						enemy->displayStats();
-						SETCMDCOLOR(GREEN)
-							std::cout << "My stats:\n";
-						myMortar.displayStats();
-						
-						std::cout << "Attacking enemy...\n";
-						SETCMDCOLOR(LIGHTGRAY)
-						myMortar.applyDamage(enemy);
-						if (enemy->getHealth() <= 0)
-						{
-							std::cout << "Emeny died!\n";
-							myMortar.setExp(enemy->getExp());
-							myMortar.setShellLevel();
-							delete enemy;
-							enemy = 0;
-							break;
-						}
+				if (enemy)
+				{
+					SETCMDCOLOR(RED)
 
-						Sleep(2500);
-						SETCMDCOLOR(RED)
+						std::cout << "Enemy stats:\n";
+					enemy->displayStats();
+					SETCMDCOLOR(GREEN)
+						std::cout << "My stats:\n";
+					myMortar.displayStats();
+
+					std::cout << "Attacking enemy...\n";
+					SETCMDCOLOR(LIGHTGRAY)
+						myMortar.applyDamage(enemy);
+					if (enemy->getHealth() <= 0)
+					{
+						std::cout << "Emeny died!\n";
+						myMortar.setExp(enemy->getExp());
+						myMortar.setShellLevel();
+						delete enemy;
+						enemy = 0;
+						break;
+					}
+
+					Sleep(2500);
+					SETCMDCOLOR(RED)
 						std::cout << "Enemy strikes back...\n";
-						SETCMDCOLOR(LIGHTGRAY)
+					SETCMDCOLOR(LIGHTGRAY)
 
 						enemy->applyDamage(&myMortar);
 
-						if (myMortar.getHealth() <= 0)
-						{
-							SETCMDCOLOR(RED)
+					if (myMortar.getHealth() <= 0)
+					{
+						SETCMDCOLOR(RED)
 							std::cout << "						    YOU DIED!\n";
-							Sleep(2500);
-							std::cout << "					***********GAME OVER!***********\n";
-							gameOver = 1;
-							
-						}
+						Sleep(2500);
+						std::cout << "					***********GAME OVER!***********\n";
+						gameOver = 1;
+
+					}
+				}
 						break;
 							
 			default:

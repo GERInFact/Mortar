@@ -1,10 +1,18 @@
 #include "mortar.h"
 
 
-Mortar::Mortar(int armour, int health, int shellType, int range, int blastRadius, int damage, int reloadTime, int exp, bool isPlayer) : mArmour(armour),mHealth(health)
-				,mShellType(shellType), mRange(range),mBlastRadius(blastRadius),mDamageDealt(damage),mReloadTime(reloadTime), mExperience(exp), mIsPlayer(isPlayer){}
+
+Mortar::Mortar(int armour, int health, int shellType, int range, int blastRadius, int reloadTime, int exp, bool isPlayer) : mArmour(armour),mHealth(health)
+				,mShellType(shellType), mRange(range),mBlastRadius(blastRadius),mReloadTime(reloadTime), mExperience(exp), mIsPlayer(isPlayer){}
 
 Mortar::Mortar() {}
+
+
+
+int Mortar::Randomize(int min, int max)
+{
+	return (min + rand() % (max - min) + 1);
+}
 
 std::ostream& operator << (std::ostream& out, Mortar mortar)
 {
@@ -15,7 +23,6 @@ std::ostream& operator << (std::ostream& out, Mortar mortar)
 	out << "Armour:		"<<mortar.mArmour<<std::endl;
 	out << "Range:		"<<mortar.mRange<<std::endl;
 	out << "BlastRadius:	"<<mortar.mBlastRadius<<std::endl;
-	out << "BaseDamage:	"<<mortar.mDamageDealt<<std::endl;
 	out << "ReloadTime:	"<<mortar.mReloadTime<<std::endl;
 	out << "Experience:	"<<mortar.mExperience<<std::endl;
 	out << "------------------------\n";
@@ -26,9 +33,9 @@ int Mortar::distanceToTarget(Mortar* target)
 {
 	return sqrt((target->mPosition[0] - mPosition[0])*(target->mPosition[0] - mPosition[0]) + (target->mPosition[1] - mPosition[1]) * (target->mPosition[1] - mPosition[1]));
 }
-bool Mortar::isEnemyInRange(Mortar* mEnemy)
+bool Mortar::isEnemyInRange(Mortar* mEnemy, int missileWeight)
 {	 
-	if (mRange + mBlastRadius >= distanceToTarget(mEnemy))
+	if (mRange + mBlastRadius - missileWeight >= distanceToTarget(mEnemy))
 		return 1;
 	else return 0;
 }
@@ -51,49 +58,103 @@ void Mortar::setExp(int exp)
 }
 void Mortar::applyDamage(Mortar* mEnemy)
 {	
-	std::cout << "Distance to target: " << distanceToTarget(mEnemy)<<std::endl;
-
-	if (isEnemyInRange(mEnemy))
+	if (mEnemy)
 	{
-		if ((mEnemy->mPosition[0] > mPosition[0] && mIsFacingRight) || (mEnemy->mPosition[0] < mPosition[0] && !mIsFacingRight) || !mIsPlayer)
-		{
-			int damage = mDamageDealt*mShellType - mEnemy->mArmour*mEnemy->mShellType;
+		Missile missile(0, 0, 0, 0);
+		int input;
 
-			if (damage > 0 && mEnemy)
+		std::cout << "Distance to target: " << distanceToTarget(mEnemy) << std::endl;
+
+		if (mIsPlayer)
+		{
+			while (true)
 			{
-				mEnemy->mHealth -= (damage);
-				std::cout << damage << " damage dealt!\n";
+				SETCMDCOLOR(RED | GREEN)
+					std::cout << "Select a missile (1-3): ";
+				std::cin >> input;
+				switch (input)
+				{
+				case 1:
+					missile.mShellType = 1;
+					missile.mDamage = Randomize(15,20);
+					missile.mWeight = 0;
+					break;
+				case 2:
+					missile.mShellType = 2;
+					missile.mDamage = Randomize(20,35);
+					missile.mWeight = 1;
+					break;
+				case 3:
+					missile.mShellType = 3;
+					missile.mDamage = Randomize(45,70);
+					missile.mWeight = 2;
+					break;
+				default:
+					break;
+				}
+				SETCMDCOLOR(LIGHTGRAY)
+					std::cout << "----------------\nShellType:	" << missile.mShellType << "\nDamage:		" << missile.mDamage << "\nWeight:		" << missile.mWeight << "\n----------------\n" << std::endl;
+				std::cout << "Confirm (1) / deny (2) loading...";
+				std::cin >> input;
+				if (input == 1)
+				{
+					break;
+				}
 			}
-			else
+		}
+		else
+		{
+			missile.mShellType = 0;
+			missile.mDamage = Randomize(10, 60);
+			missile.mWeight = Randomize(0,4);
+
+		}
+
+
+		if (isEnemyInRange(mEnemy, missile.mWeight))
+		{
+
+
+			if ((mEnemy->mPosition[0] > mPosition[0] && mIsFacingRight) || (mEnemy->mPosition[0] < mPosition[0] && !mIsFacingRight) || !mIsPlayer)
 			{
-				SETCMDCOLOR(RED)
-				std::cout << "Missle couldn't rend armour\n";
+				int damage = missile.mDamage*mShellType - mEnemy->mArmour*mEnemy->mShellType;
+
+				if (damage > 0 && mEnemy)
+				{
+					mEnemy->mHealth -= (damage);
+					std::cout << damage << " damage dealt!\n";
+				}
+				else
+				{
+					SETCMDCOLOR(RED)
+						std::cout << "Missle couldn't rend armour\n";
+					SETCMDCOLOR(LIGHTGRAY)
+				}
+			}
+			else if (mIsPlayer)
+			{
+				SETCMDCOLOR(RED | GREEN)
+					std::cout << "Invalid command! Recheck turret alignment...\n";
 				SETCMDCOLOR(LIGHTGRAY)
 			}
 		}
-		else if (mIsPlayer)
+		else
 		{
-			SETCMDCOLOR(RED|GREEN)			
-			std::cout << "Invalid command! Recheck turret alignment...\n";
+			SETCMDCOLOR(RED)
+				std::cout << "Out of range...\n";
 			SETCMDCOLOR(LIGHTGRAY)
+
 		}
-	}
-	else
-	{
-		SETCMDCOLOR(RED)
-		std::cout << "Out of range...\n";
-		SETCMDCOLOR(LIGHTGRAY)
-			
 	}
 	
 }
 
 Mortar* Mortar::sendScouts()
 {
-	int rnd = rand() % 4;
+	int rnd = Randomize(0,4);
 
-	if(rnd == 1)
-	return new Mortar(5,100+rand()%(300-100),1+rand()%(4-1),1+rand()%4-1,1,5+rand()%(60-5),3, 30 + rand() % (101 - 30),0);
+	if (rnd == 1)
+		return new Mortar(Randomize(5, 20), Randomize(120, 280), Randomize(1, 3), Randomize(3, 8), Randomize(1, 4), 0, Randomize(35, 90), 0);
 	else return 0;
 
 }
