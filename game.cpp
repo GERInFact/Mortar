@@ -97,7 +97,7 @@ int main()
 		}
 		SETCMDCOLOR(RED | TURQUOISE)
 		//upper game menu
-		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6) Try to escape fight 7)Quit game\n";
+		std::cout << "1)Move mortar 2)Send scouts 3)Show stats 4)Show map 5)Attack enemy 6)Try to escape fight 7)Quit game\n";
 		std::cin >> input;
 		if (std::cin.fail())
 		{
@@ -191,6 +191,8 @@ int main()
 										
 				}
 				break;
+			case 7:
+				return 0;
 			default:
 			{	SETCMDCOLOR(RED)
 				std::cout << "Invalid input!\n";
