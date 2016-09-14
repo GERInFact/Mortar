@@ -1,6 +1,4 @@
 # Mortar
-Mortar, an outstanding project by Fab
-
 Context: You are working on a prototype of a 2D tower defense game for
 a mobile platform, using approximated physics. The basic
 systems that drive the game are to be developed independently
