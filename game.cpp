@@ -1,19 +1,17 @@
 #include "mortar.h"
 #include <time.h>
 
-
+int _2DTo1D(int* position, int width)
+{
+	return position[0] + position[1] * width;
+}
 void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 {
 
-	for (int x = 1; x <= (battleField[0]); x++)
+	for (int x = 1; x <= (battleField[0]* battleField[1]); x++)
 	{
-		for (int y = 1; y <= (battleField[1]); y++)
-		{
-			if (!(y % battleField[1]))
-			{
-				std::cout << std::endl;
-			}
-			else if (y == myMortar->mPosition[0] && x == myMortar->mPosition[1])
+			
+			if (x == _2DTo1D(myMortar->mPosition,battleField[0]))
 			{
 				SETCMDCOLOR(GREEN)
 					if(myMortar->mIsFacingRight)
@@ -21,17 +19,21 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 					else
 					std::cout << " < ";
 				SETCMDCOLOR(LIGHTGRAY)
+					if (myMortar->mPosition[0] == battleField[0])
+						std::cout << std::endl;
 			}
-			else if (enemy && y == enemy->mPosition[0] && x == enemy->mPosition[1])
+			else if (enemy && x == _2DTo1D(enemy->mPosition,battleField[0]))
 			{
 				SETCMDCOLOR(RED)
 				std::cout << " X ";
 				SETCMDCOLOR(LIGHTGRAY)
 			}
+			else if (!(x % (battleField[0])))
+			{
+				std::cout << " _ " << std::endl;
+			}			
 			else
-				std::cout << " _ ";
-		}
-		
+				std::cout << " _ ";		
 	}
 	std::cout << std::endl << std::endl << std::endl;
 
@@ -44,6 +46,8 @@ int main()
 	int battleField[2] = { 10,10 };
 	bool gameOver = 0;
 	bool showMap = 0;
+		std::vector<Mortar*> battalion;
+
 	
 	
 	
@@ -85,6 +89,11 @@ int main()
 					return 1;
 				}
 				myMortar.moveMortar(input, battleField);
+				if (enemy && _2DTo1D(myMortar.mPosition, battleField[0]) == _2DTo1D(enemy->mPosition, battleField[0]))
+				{
+					std::cout << "						FATAL COLLISION! GAME OVER\n";
+					return 0;
+				}
 				if (enemy)
 					enemy->moveMortar(1 + rand() % (5 - 1), battleField);
 				SETCMDCOLOR(GREEN)
