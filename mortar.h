@@ -34,6 +34,7 @@ public:
 	int mPosition[2] = { 1 + rand() % (10 - 1),	1 + rand() % (10 - 1) };
 	bool mIsFacingRight = 1;
 	bool mIsPlayer;
+	bool hasBeenAttacked = 0;
 	int Randomize(int min, int max);
 	
 private:
