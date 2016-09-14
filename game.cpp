@@ -46,7 +46,7 @@ int main()
 	int battleField[2] = { 10,10 };
 	bool gameOver = 0;
 	bool showMap = 0;
-		std::vector<Mortar*> battalion;
+	
 
 	
 	
