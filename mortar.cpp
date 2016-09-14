@@ -111,7 +111,7 @@ void Mortar::moveMortar(int input, int* battleField)
 	switch (input)
 	{
 	case 1:
-		if (mPosition[1] > 1)
+		if (mPosition[1] > 0)
 			mPosition[1] -= 1;
 		else
 		{
@@ -121,7 +121,7 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 2:
-		if (mPosition[1] < battleField[1])
+		if (mPosition[1] < battleField[1]-1)
 			mPosition[1] += 1;
 		
 		else
@@ -132,7 +132,7 @@ void Mortar::moveMortar(int input, int* battleField)
 		}
 		break;
 	case 3:
-		if (mPosition[0] < battleField[0]-1)
+		if (mPosition[0] < battleField[0])
 		{
 			if (mIsFacingRight)
 				mPosition[0] += 1;
