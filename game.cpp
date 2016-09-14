@@ -31,9 +31,12 @@ void displayMap(Mortar* myMortar, Mortar* enemy, int* battleField)
 			}
 			else if (enemy && x == _2DTo1D(enemy->mPosition,battleField[0]))
 			{
+				
 				SETCMDCOLOR(RED)
 				std::cout << " X ";
 				SETCMDCOLOR(LIGHTGRAY)
+					if (enemy->mPosition[0] == battleField[0])
+						std::cout << std::endl;
 			}
 			else if (!(x % (battleField[0])))
 			{
@@ -68,14 +71,24 @@ int main()
 
 	while (!gameOver)
 	{
-		SETCMDCOLOR(LIGHTGRAY)
+		if (myMortar.getHealth() <= 0)
+		{
+			SETCMDCOLOR(RED)
+				std::cout << "						    YOU DIED!\n";
+			Sleep(2500);
+			std::cout << "					***********GAME OVER!***********\n";
+			gameOver = 1;
 
+		}
+
+		SETCMDCOLOR(LIGHTGRAY)
+		
 		if(showMap)
 		{
 			displayMap(&myMortar,enemy, battleField);
 		}
 		SETCMDCOLOR(RED | TURQUOISE)
-		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6)Quit game\n";
+		std::cout << "1) Move mortar 2) Send scouts 3) Show stats 4)Show map 5) Attack enemy 6) Try to escape fight 7)Quit game\n";
 		std::cin >> input;
 		if (std::cin.fail())
 		{
@@ -156,29 +169,35 @@ int main()
 					SETCMDCOLOR(RED)
 						std::cout << "Enemy strikes back...\n";
 					SETCMDCOLOR(LIGHTGRAY)
-
-						enemy->applyDamage(&myMortar);
-
-					if (myMortar.getHealth() <= 0)
-					{
-						SETCMDCOLOR(RED)
-							std::cout << "						    YOU DIED!\n";
-						Sleep(2500);
-						std::cout << "					***********GAME OVER!***********\n";
-						gameOver = 1;
-
-					}
+					enemy->applyDamage(&myMortar);
+								
 				}
 						break;
-							
+			case 6:
+				if (enemy)
+				{
+					if (rando_Mize(0, 3) == 1)
+					{
+						std::cout << "YOU ESCAPED...\n";
+						delete[] enemy;
+						enemy = 0;
+					}
+					else
+					{
+						enemy->applyDamage(&myMortar);
+					
+				}
+				break;
 			default:
 			{	SETCMDCOLOR(RED)
 				std::cout << "Invalid input!\n";
-				SETCMDCOLOR(LIGHTGRAY)
+			SETCMDCOLOR(LIGHTGRAY)
 				break;;
+
 			}
 		}
 	}
+}
 	
 
 }

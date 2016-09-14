@@ -115,7 +115,7 @@ void Mortar::applyDamage(Mortar* mEnemy)
 		{
 
 
-			if ((mEnemy->mPosition[0] > mPosition[0] && mIsFacingRight) || (mEnemy->mPosition[0] < mPosition[0] && !mIsFacingRight) || !mIsPlayer)
+			if ((mEnemy->mPosition[0] > mPosition[0] && mIsFacingRight) || (mEnemy->mPosition[0] < mPosition[0] && !mIsFacingRight) || !mIsPlayer || mPosition[0]==mEnemy->mPosition[0])
 			{
 				int damage = missile.mDamage*mShellType - mEnemy->mArmour*mEnemy->mShellType;
 
